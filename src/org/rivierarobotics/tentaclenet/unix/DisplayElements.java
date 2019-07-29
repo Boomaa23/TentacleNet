@@ -17,6 +17,9 @@ public interface DisplayElements {
 	JPanel MATCH_DATA = new JPanel(new FlowLayout(FlowLayout.CENTER));
 	JPanel EVENT_INFO = new JPanel(new FlowLayout(FlowLayout.CENTER));
 	
+	//subpanels
+	JPanel ASSORTED_INFO = new JPanel(new FlowLayout(FlowLayout.CENTER));
+	
 	//sub-subpanels
 	JPanel MATCH_TYPE_P = new JPanel(new FlowLayout(FlowLayout.CENTER));
 	JPanel STARTING_HAB_P = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -27,6 +30,7 @@ public interface DisplayElements {
 	JPanel CLIMB_LVL_P = new JPanel(new FlowLayout(FlowLayout.CENTER));
 	JPanel CLIMB_SUCCESS_P = new JPanel(new FlowLayout(FlowLayout.CENTER));
 	JPanel CLIMB_BUDDY_P = new JPanel(new FlowLayout(FlowLayout.CENTER));
+	JPanel ASSORTED_INFO_TEXT = new JPanel(new FlowLayout(FlowLayout.CENTER));
 	
 	//assorted info buttongroups
 	ButtonGroup STARTING_HAB = new ButtonGroup();
