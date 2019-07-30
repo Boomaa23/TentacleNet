@@ -1,25 +1,32 @@
 package org.rivierarobotics.tentaclenet.unix;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import javax.swing.AbstractButton;
+import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 public class Utils {
+	public static final Color TABLE_BORDER_COLOR = Color.GRAY;
+	
 	private static StringBuffer retrieveWebContent(String url) throws IOException {
     	InputStream is = new URL(url).openStream();
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
@@ -59,41 +66,61 @@ public class Utils {
     		e.printStackTrace();
     	}
     }
+    
+    public static void getRadioSelections(StringBuffer data, JPanel container, boolean nested) {
+    	final Component[] containerComponents = (Component[])(container.getComponents());
+    	for(Component containerComponent : containerComponents) {
+    		if(containerComponent.getClass().isAssignableFrom(JPanel.class)) {
+    			getRadioSelections(data, (JPanel)(containerComponent));
+    		}
+    	}
+    }
 
-  //TODO make sure this only gets and attaches the "assorted info" assigned radio buttons and fields - use some sort of hierarchy checking
-    public static void getAssortedData(StringBuffer data) {
+    public static void getRadioSelections(StringBuffer data, JPanel container) {
     	try {
 	    	Field[] displayFields = DisplayElements.class.getDeclaredFields();
 	    	for(Field field : displayFields) {
-	    		switch(field.getGenericType().getTypeName()) {
-		    		case "org.rivierarobotics.tentaclenet.unix.OverlayField":
-		    			data.append(((OverlayField)(field.get(field))).getText()); break;
-		    		case "javax.swing.ButtonGroup":
-		    			List<AbstractButton> buttons = Collections.list(((ButtonGroup)(field.get(field))).getElements()); 
-		    			for(AbstractButton button : buttons) {
-		    				if(button.isSelected()) {
-		    					data.append(button.getText());
-		    				}
-		    			}
-		    			break;
+	    		if(field.getGenericType().getTypeName() == "javax.swing.ButtonGroup") {
+	    			boolean isValid = false;
+	    			List<AbstractButton> buttons = Collections.list(((ButtonGroup)(field.get(field))).getElements()); 
+	    			for(AbstractButton button : buttons) {
+	    				if(Arrays.asList(container.getComponents()).contains(button)) {
+	    					isValid = true;
+	    					if(button.isSelected()) {
+	    						data.append(button.getText() + ", ");
+	    					}
+	    				}
+	    			}
+	    			if(((ButtonGroup)(field.get(field))).getSelection() == null && isValid) {
+ 	    				data.append(", ");
+ 	    			}
 	    		}
-	    		data.append(", ");
 	    	}
-	    	System.out.println(data.toString());
     	} catch(IllegalArgumentException | IllegalAccessException e) {
     		e.printStackTrace();
     	}
     }
     
-    public static void getCargoData(StringBuffer data) {
-    	
-    }
-    	
-	public static void getHatchData(StringBuffer data) {
-		
+	public static void getPanelData(StringBuffer data, JPanel panel) {
+		Component[] fields = panel.getComponents();
+    	for(Component field : fields) {
+    		if(field.getClass().isAssignableFrom(JTextField.class) 
+    				|| field.getClass().isAssignableFrom(OverlayField.class)) {
+    			data.append(((JTextField)(field)).getText() + ", ");
+    		}
+    	}
 	}
     		
 	public static void getCommentaryData(StringBuffer data) {
 		
     }
+	
+	public static void addTextFieldRow(JPanel panel, JLabel header, int numToAdd) {
+		header.setHorizontalAlignment(JLabel.CENTER);
+		header.setBorder(BorderFactory.createLineBorder(TABLE_BORDER_COLOR)); 
+		panel.add(header);
+		for(int i = 0;i < numToAdd;i++) {
+			panel.add(new JTextField(5));
+		}
+	}
 }
