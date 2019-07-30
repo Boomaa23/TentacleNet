@@ -1,9 +1,7 @@
 package org.rivierarobotics.tentaclenet.unix;
 
-import static org.rivierarobotics.tentaclenet.unix.Listener.UploadToServer;
-
-import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
@@ -11,10 +9,11 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
 
 public class Display implements DisplayElements {
 	public static void main(String[] args) {
-		initFrame(400, 700);
+		initFrame(400, Math.min(800, (int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight())));
 		addEventInfo();
 		addMatchData();
 		addButtons();
@@ -28,15 +27,20 @@ public class Display implements DisplayElements {
 		MAIN_PANEL.setLayout(new BoxLayout(MAIN_PANEL, BoxLayout.Y_AXIS));
 	}
 	
+	private static void applyScroll() {
+		JScrollPane scroll = new JScrollPane(MAIN_PANEL, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scroll.getVerticalScrollBar().setUnitIncrement(20);
+        FRAME.add(scroll);
+	}
+	
 	private static void finalizeFrame() {
-		Utils.addPanelComponents(MAIN_PANEL, EVENT_INFO, MATCH_TYPE_P, MATCH_DATA, HATCH_GRID, CARGO_GRID, ASSORTED_INFO, BUTTONS);
-		FRAME.add(MAIN_PANEL);
+		Utils.addPanelComponents(MAIN_PANEL, EVENT_INFO, MATCH_DATA, HATCH_GRID, CARGO_GRID, ASSORTED_INFO, COMMENTARY_BOXES, BUTTONS);
+		applyScroll();
 		FRAME.repaint();
 		FRAME.setVisible(true);
 	}
 	
 	private static void addEventInfo() {
-		//Utils.addButtonGroup(MATCH_TYPE_P, MATCH_TYPE, new JLabel("Match Type:"), QUALS_R, ELIMS_R, FINALS_R);
 		Utils.addPanelComponents(EVENT_INFO, TEAM_NUMBER, MATCH_NUMBER, INITIALS);
 	}
 	
@@ -55,10 +59,10 @@ public class Display implements DisplayElements {
 			label.setBorder(BorderFactory.createLineBorder(Utils.TABLE_BORDER_COLOR)); 
 		}
 		Utils.addPanelComponents(HATCH_GRID, colHeaders);
-		Utils.addTextFieldRow(HATCH_GRID, new JLabel("R3"), 3);
-		Utils.addTextFieldRow(HATCH_GRID, new JLabel("R2"), 3);
-		Utils.addTextFieldRow(HATCH_GRID, new JLabel("R1"), 3);
-		Utils.addTextFieldRow(HATCH_GRID, new JLabel("CS"), 3);
+		Data.addTextFieldRow(HATCH_GRID, new JLabel("R3"), 3);
+		Data.addTextFieldRow(HATCH_GRID, new JLabel("R2"), 3);
+		Data.addTextFieldRow(HATCH_GRID, new JLabel("R1"), 3);
+		Data.addTextFieldRow(HATCH_GRID, new JLabel("CS"), 3);
 		HATCH_GRID.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 	}
 	
@@ -70,14 +74,14 @@ public class Display implements DisplayElements {
 			label.setBorder(BorderFactory.createLineBorder(Utils.TABLE_BORDER_COLOR)); 
 		}
 		Utils.addPanelComponents(CARGO_GRID, colHeaders);
-		Utils.addTextFieldRow(CARGO_GRID, new JLabel("R3"), 3);
-		Utils.addTextFieldRow(CARGO_GRID, new JLabel("R2"), 3);
-		Utils.addTextFieldRow(CARGO_GRID, new JLabel("R1"), 3);
-		Utils.addTextFieldRow(CARGO_GRID, new JLabel("CS"), 3);
+		Data.addTextFieldRow(CARGO_GRID, new JLabel("R3"), 3);
+		Data.addTextFieldRow(CARGO_GRID, new JLabel("R2"), 3);
+		Data.addTextFieldRow(CARGO_GRID, new JLabel("R1"), 3);
+		Data.addTextFieldRow(CARGO_GRID, new JLabel("CS"), 3);
 	}
 	
 	private static void addCommentaryBoxes() {
-		
+		Utils.addPanelComponents(COMMENTARY_BOXES, RELIABILITY_CM, CLIMB_CM, STABILITY_CM, DEFENSE_CM, DRIVER_CM, PENALTY_CM, OTHER_CM);
 	}
 	
 	private static void addAssortedInfo() {
@@ -95,9 +99,9 @@ public class Display implements DisplayElements {
 	}
 	
 	private static void addButtons() {
-		BUTTONS.add(getListenedButton("Save & Advance", e -> { Listener.saveAndAdvance(); }, true));
-		BUTTONS.add(getListenedButton("Reset", e -> { Utils.clearAllInputs(); }));
-		BUTTONS.add(getListenedButton("Upload to Server", new UploadToServer()));
+		BUTTONS.add(getListenedButton("Save & Reset", e -> { Listener.saveAndReset(); }, true));
+		BUTTONS.add(getListenedButton("Reset", e -> { Data.clearAllInputs(); }));
+		BUTTONS.add(getListenedButton("Upload to Server", e -> { Listener.uploadToServer(); }));
 	}
 	
 	private static JButton getListenedButton(String text, ActionListener listener) {

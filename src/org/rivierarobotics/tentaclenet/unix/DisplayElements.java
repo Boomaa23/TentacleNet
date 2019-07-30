@@ -1,6 +1,7 @@
 package org.rivierarobotics.tentaclenet.unix;
 
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
@@ -18,12 +19,12 @@ public interface DisplayElements {
 	JPanel EVENT_INFO = new JPanel(new FlowLayout(FlowLayout.CENTER));
 	
 	//subpanels
-	JPanel ASSORTED_INFO = new JPanel(new FlowLayout(FlowLayout.CENTER));
-	JPanel CARGO_GRID = new JPanel(new FlowLayout(FlowLayout.CENTER));
-	JPanel HATCH_GRID = new JPanel(new FlowLayout(FlowLayout.CENTER));
+	JPanel ASSORTED_INFO = new JPanel(null);
+	JPanel CARGO_GRID = new JPanel(null);
+	JPanel HATCH_GRID = new JPanel(null);
+	JPanel COMMENTARY_BOXES = new JPanel(new GridLayout(7, 1));
 	
 	//sub-subpanels
-	JPanel MATCH_TYPE_P = new JPanel(new FlowLayout(FlowLayout.CENTER));
 	JPanel STARTING_HAB_P = new JPanel(new FlowLayout(FlowLayout.CENTER));
 	JPanel MOVEMENT_P = new JPanel(new FlowLayout(FlowLayout.CENTER));
 	JPanel HATCH_INTAKE_P = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -67,14 +68,19 @@ public interface DisplayElements {
 	
 	//assorted info textfields
 	OverlayField CLIMB_TIME = new OverlayField("Climb Time");
-	OverlayField BUILD_RANK = new OverlayField("Robot Build Rank (1-10)");
+	OverlayField BUILD_RANK = new OverlayField("Robot Build (1-10)");
 	
 	//event information
 	OverlayField INITIALS = new OverlayField("Initials");
 	OverlayField MATCH_NUMBER = new OverlayField("Match Number");
 	OverlayField TEAM_NUMBER = new OverlayField("Team Number");
-	ButtonGroup MATCH_TYPE = new ButtonGroup();
-	JRadioButton QUALS_R = new JRadioButton("Quals");
-	JRadioButton ELIMS_R = new JRadioButton("Elims");
-	JRadioButton FINALS_R = new JRadioButton("Finals");
+	
+	//commentary boxes
+	OverlayField RELIABILITY_CM = new OverlayField("Reliability CM");
+	OverlayField CLIMB_CM = new OverlayField("Climb CM");
+	OverlayField STABILITY_CM = new OverlayField("Stability CM");
+	OverlayField DEFENSE_CM = new OverlayField("Defense CM");
+	OverlayField DRIVER_CM = new OverlayField("Driver CM");
+	OverlayField PENALTY_CM = new OverlayField("Penalties");
+	OverlayField OTHER_CM = new OverlayField("Other");
 }
