@@ -1,5 +1,9 @@
 package org.rivierarobotics.tentaclenet.unix;
 
+import java.util.Arrays;
+
+import com.google.api.services.sheets.v4.model.ValueRange;
+
 public class Listener {
 	public static String[] getData() {
 		StringBuffer data = new StringBuffer();
@@ -16,20 +20,12 @@ public class Listener {
 	
 	public static void saveAndReset() {
 		String[] lastMatchData = getData();
-		Utils.SAVED_DATA_MATCHES.add(lastMatchData);
-		Data.clearAllInputs();
+		Data.SAVED_DATA_MATCHES.add(Arrays.asList((Object[])(lastMatchData)));
 	}
 	
-	public static boolean isNumeric(String str) {
-		try {
-			System.out.println(Integer.parseInt(str));
-		} catch(NumberFormatException | NullPointerException e) {
-			return false;
-		}
-		return true;
-	}
-
 	public static void uploadToServer() {
-		getData();
+		ValueRange values = new ValueRange();
+		values.setValues(Data.SAVED_DATA_MATCHES);
+		GoogleOAuth.appendSingle(values, "A1");
 	}
 }

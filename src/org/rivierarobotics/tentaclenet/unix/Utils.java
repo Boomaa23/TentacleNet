@@ -1,13 +1,10 @@
 package org.rivierarobotics.tentaclenet.unix;
 
-import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JComponent;
@@ -19,9 +16,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 public class Utils {
-	public static final Color TABLE_BORDER_COLOR = Color.GRAY;
-	public static final List<String[]> SAVED_DATA_MATCHES = new ArrayList<String[]>();
-	
 	private static StringBuffer retrieveWebContent(String url) throws IOException {
     	InputStream is = new URL(url).openStream();
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
@@ -44,5 +38,14 @@ public class Utils {
     
     public static void addPanelComponents(JComponent panel, JComponent... comp) {
 		for(JComponent jc : comp) { panel.add(jc); }
+	}
+    
+    public static boolean isNumeric(String str) {
+		try {
+			System.out.println(Integer.parseInt(str));
+		} catch(NumberFormatException | NullPointerException e) {
+			return false;
+		}
+		return true;
 	}
 }

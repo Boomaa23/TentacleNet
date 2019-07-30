@@ -1,7 +1,9 @@
 package org.rivierarobotics.tentaclenet.unix;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -14,6 +16,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class Data {
+	public static List<List<Object>> SAVED_DATA_MATCHES = new ArrayList<List<Object>>();
+	public static final Color TABLE_BORDER_COLOR = Color.GRAY;
+	
 	private static void clearInstanceTextFields() {
 		Component[] cargo = DisplayElements.CARGO_GRID.getComponents();
 		Component[] hatch = DisplayElements.HATCH_GRID.getComponents();
@@ -30,7 +35,7 @@ public class Data {
 	}
 
 	private static String[] rearrangeArray(String[] original, int... transferOrder) {
-		String[] newData = new String[original.length - 3];
+		String[] newData = new String[original.length - 1];
 		for(int i = 0;i < transferOrder.length;i++) {
 			newData[i] = original[transferOrder[i]];
 		}
@@ -39,15 +44,15 @@ public class Data {
 
 	public static String[] parseDataString(String data) {
 		String[] arrayData = data.split(",\\s");
-		return rearrangeArray(arrayData, 0, 1, 2, 9, 6, 3, 12, 10, 
-				7, 4, 13, 11, 8, 5, 14, 21, 18, 15, 24, 22, 
-				19, 16, 25, 23, 20, 17, 26, 29, 30, 31, 37, 
-				32, 33, 35, 34, 38, 36, 39, 40, 41, 42, 43);
+		return rearrangeArray(arrayData, 0, 1, 2, 27, 28, 9, 6,
+				3, 12, 10, 7, 4, 13, 11, 8, 5, 14, 21, 18, 15, 
+				24, 22, 19, 16, 25, 23, 20, 17, 26, 29, 30, 31, 
+				37, 32, 33, 35, 34, 38, 36, 39, 40, 41, 42, 43);
 	}
 
 	public static void addTextFieldRow(JPanel panel, JLabel header, int numToAdd) {
 		header.setHorizontalAlignment(JLabel.CENTER);
-		header.setBorder(BorderFactory.createLineBorder(Utils.TABLE_BORDER_COLOR)); 
+		header.setBorder(BorderFactory.createLineBorder(Data.TABLE_BORDER_COLOR)); 
 		panel.add(header);
 		for(int i = 0;i < numToAdd;i++) {
 			panel.add(new JTextField(5));
@@ -116,5 +121,4 @@ public class Data {
 			e.printStackTrace();
 		}
 	}
-
 }

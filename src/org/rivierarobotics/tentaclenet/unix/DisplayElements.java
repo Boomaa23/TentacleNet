@@ -63,8 +63,8 @@ public interface DisplayElements {
 	JRadioButton C_FEEDER_R = new JRadioButton("Feeder");
 	JRadioButton FAILED_R = new JRadioButton("Failed");
 	JRadioButton SUCCESS_R = new JRadioButton("Success");
-	JRadioButton YES_R = new JRadioButton("Yes");
-	JRadioButton NO_R = new JRadioButton("No");
+	JRadioButton YES_R = new JRadioButton("Y");
+	JRadioButton NO_R = new JRadioButton("N");
 	
 	//assorted info textfields
 	OverlayField CLIMB_TIME = new OverlayField("Climb Time");

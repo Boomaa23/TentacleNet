@@ -3,6 +3,8 @@ package org.rivierarobotics.tentaclenet.unix;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -56,7 +58,7 @@ public class Display implements DisplayElements {
 		JLabel[] colHeaders = { new JLabel("Hatch"), new JLabel("S.S"), new JLabel("Teleop"), new JLabel("Failed") };
 		for(JLabel label : colHeaders) { 
 			label.setHorizontalAlignment(JLabel.CENTER); 
-			label.setBorder(BorderFactory.createLineBorder(Utils.TABLE_BORDER_COLOR)); 
+			label.setBorder(BorderFactory.createLineBorder(Data.TABLE_BORDER_COLOR)); 
 		}
 		Utils.addPanelComponents(HATCH_GRID, colHeaders);
 		Data.addTextFieldRow(HATCH_GRID, new JLabel("R3"), 3);
@@ -71,7 +73,7 @@ public class Display implements DisplayElements {
 		JLabel[] colHeaders = { new JLabel("Cargo"), new JLabel("S.S"), new JLabel("Teleop"), new JLabel("Failed") };
 		for(JLabel label : colHeaders) { 
 			label.setHorizontalAlignment(JLabel.CENTER); 
-			label.setBorder(BorderFactory.createLineBorder(Utils.TABLE_BORDER_COLOR)); 
+			label.setBorder(BorderFactory.createLineBorder(Data.TABLE_BORDER_COLOR)); 
 		}
 		Utils.addPanelComponents(CARGO_GRID, colHeaders);
 		Data.addTextFieldRow(CARGO_GRID, new JLabel("R3"), 3);
@@ -99,9 +101,10 @@ public class Display implements DisplayElements {
 	}
 	
 	private static void addButtons() {
-		BUTTONS.add(getListenedButton("Save & Reset", e -> { Listener.saveAndReset(); }, true));
+		BUTTONS.add(getListenedButton("Save", e -> { Listener.saveAndReset(); }, true));
 		BUTTONS.add(getListenedButton("Reset", e -> { Data.clearAllInputs(); }));
-		BUTTONS.add(getListenedButton("Upload to Server", e -> { Listener.uploadToServer(); }));
+		BUTTONS.add(getListenedButton("Upload", e -> { Listener.uploadToServer(); }));
+		BUTTONS.add(getListenedButton("Clear Stored", e -> { Data.SAVED_DATA_MATCHES = new ArrayList<List<Object>>(); }));
 	}
 	
 	private static JButton getListenedButton(String text, ActionListener listener) {

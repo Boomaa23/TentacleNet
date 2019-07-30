@@ -45,7 +45,7 @@ public class GoogleOAuth extends GooglePrivateConstants {
 	
 	public static void appendSingle(ValueRange values, String startCell) {
 		try {
-			SHEETS_SERVICE.spreadsheets().values().append(SPREADSHEET_ID, startCell, values).setValueInputOption("RAW").setInsertDataOption("INSERT_ROWS").execute();
+			SHEETS_SERVICE.spreadsheets().values().append(SPREADSHEET_ID, startCell, values).setValueInputOption("USER_ENTERED").setInsertDataOption("INSERT_ROWS").execute();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
