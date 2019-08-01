@@ -1,7 +1,12 @@
 package org.rivierarobotics.tentaclenet.unix;
 
+import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
+import javax.imageio.ImageIO;
+
+import com.github.sarxos.webcam.Webcam;
+import com.github.sarxos.webcam.WebcamPanel;
 import com.google.api.services.sheets.v4.model.ValueRange;
 
 public class Listener {
@@ -18,7 +23,7 @@ public class Listener {
 		return Data.parseDataString(data.toString());
 	}
 	
-	public static void saveAndReset() {
+	public static void saveAction() {
 		String[] lastMatchData = getData();
 		Data.SAVED_DATA_MATCHES.add(Arrays.asList((Object[])(lastMatchData)));
 	}
@@ -27,5 +32,9 @@ public class Listener {
 		ValueRange values = new ValueRange();
 		values.setValues(Data.SAVED_DATA_MATCHES);
 		GoogleOAuth.appendSingle(values, "A1");
+	}
+	
+	public static void parseImage() {
+		BufferedImage img = Webcam.getDefault().getImage();
 	}
 }

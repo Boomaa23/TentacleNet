@@ -1,5 +1,6 @@
 package org.rivierarobotics.tentaclenet.unix;
 
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,6 +8,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 
 import javax.swing.ButtonGroup;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -47,5 +49,16 @@ public class Utils {
 			return false;
 		}
 		return true;
+	}
+
+	public static JButton getListenedButton(String text, ActionListener listener) {
+		return Utils.getListenedButton(text, listener, false);
+	}
+
+	public static JButton getListenedButton(String text, ActionListener listener, boolean defaultSelect) {
+		JButton button = new JButton(text);
+		button.addActionListener(listener);
+		if(defaultSelect) { DisplayElements.FRAME.getRootPane().setDefaultButton(button); }
+		return button;
 	}
 }

@@ -2,20 +2,18 @@ package org.rivierarobotics.tentaclenet.unix;
 
 import java.awt.GridLayout;
 import java.awt.Toolkit;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 
 public class Display implements DisplayElements {
 	public static void main(String[] args) {
-		initFrame(400, Math.min(800, (int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight())));
+		initFrame(500, Math.min(800, (int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight())));
 		addEventInfo();
 		addMatchData();
 		addButtons();
@@ -23,6 +21,7 @@ public class Display implements DisplayElements {
 	}
 	
 	private static void initFrame(int x, int y) {
+		//TODO get RR logo (black octopus, generic, no text) as icon image
 		FRAME.setSize(x, y);
 		FRAME.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		FRAME.setLocationRelativeTo(null);
@@ -101,20 +100,10 @@ public class Display implements DisplayElements {
 	}
 	
 	private static void addButtons() {
-		BUTTONS.add(getListenedButton("Save", e -> { Listener.saveAndReset(); }, true));
-		BUTTONS.add(getListenedButton("Reset", e -> { Data.clearAllInputs(); }));
-		BUTTONS.add(getListenedButton("Upload", e -> { Listener.uploadToServer(); }));
-		BUTTONS.add(getListenedButton("Clear Stored", e -> { Data.SAVED_DATA_MATCHES = new ArrayList<List<Object>>(); }));
-	}
-	
-	private static JButton getListenedButton(String text, ActionListener listener) {
-		return getListenedButton(text, listener, false);
-	}
-	
-	private static JButton getListenedButton(String text, ActionListener listener, boolean defaultSelect) {
-		JButton button = new JButton(text);
-		button.addActionListener(listener);
-		if(defaultSelect) { FRAME.getRootPane().setDefaultButton(button); }
-		return button;
+		BUTTONS.add(Utils.getListenedButton("Save", e -> { Listener.saveAction(); }, true));
+		BUTTONS.add(Utils.getListenedButton("Reset", e -> { Data.clearAllInputs(); }));
+		BUTTONS.add(Utils.getListenedButton("Upload", e -> { Listener.uploadToServer(); }));
+		BUTTONS.add(Utils.getListenedButton("Clear Stored", e -> { Data.SAVED_DATA_MATCHES = new ArrayList<List<Object>>(); }));
+		BUTTONS.add(Utils.getListenedButton("Camera", e -> { new CameraDisplay(); }));
 	}
 }
