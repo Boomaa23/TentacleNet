@@ -2,9 +2,12 @@ package org.rivierarobotics.tentaclenet.unix;
 
 import java.awt.GridLayout;
 import java.awt.Toolkit;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
@@ -21,7 +24,11 @@ public class Display implements DisplayElements {
 	}
 	
 	private static void initFrame(int x, int y) {
-		//TODO get RR logo (black octopus, generic, no text) as icon image
+		try {
+			FRAME.setIconImage(ImageIO.read(new File("rr_logo.png")));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		FRAME.setSize(x, y);
 		FRAME.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		FRAME.setLocationRelativeTo(null);

@@ -1,12 +1,22 @@
 package org.rivierarobotics.tentaclenet.unix;
 
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
-
 import javax.imageio.ImageIO;
 
-import com.github.sarxos.webcam.Webcam;
-import com.github.sarxos.webcam.WebcamPanel;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.impl.client.HttpClientBuilder;
 import com.google.api.services.sheets.v4.model.ValueRange;
 
 public class Listener {
@@ -34,7 +44,34 @@ public class Listener {
 		GoogleOAuth.appendSingle(values, "A1");
 	}
 	
-	public static void parseImage() {
-		BufferedImage img = Webcam.getDefault().getImage();
+	public static void parseImage(BufferedImage image) throws IOException {
+		String fn = String.valueOf(System.currentTimeMillis());
+		File temp = new File(fn + ".png");
+		ImageIO.write(image, "png", temp);
+		System.out.println(temp.length() / 1024);
+		postDataHttp("https://api.ocr.space/parse/image", temp);
+		temp.delete();
+	}
+	
+	private static void postDataHttp(String url, File file) throws ClientProtocolException, IOException {
+		System.out.println(url);
+		HttpClient client = HttpClientBuilder.create().build();
+		HttpPost post = new HttpPost(url);
+		
+		HttpEntity entity = MultipartEntityBuilder.create()
+				.addPart("file", new FileBody(file))
+				.addTextBody("apikey", PrivateConstants.OCR_API_KEY, ContentType.DEFAULT_BINARY)
+				.addTextBody("detectOrientation", "true", ContentType.DEFAULT_BINARY)
+				.addTextBody("scale", "false", ContentType.DEFAULT_BINARY)
+				.build();
+		post.setEntity(entity);
+		HttpResponse response = client.execute(post);
+		
+		BufferedReader br = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+		StringBuffer sb = new StringBuffer();
+		String line = "";
+		while((line = br.readLine()) != null) { sb.append(line); }
+		System.out.println(sb.toString());
+		
 	}
 }

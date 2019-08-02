@@ -15,7 +15,7 @@ import com.google.api.services.sheets.v4.SheetsScopes;
 import com.google.api.services.sheets.v4.model.ValueRange;
 
 @SuppressWarnings("deprecation")
-public class GoogleOAuth extends GooglePrivateConstants {
+public class GoogleOAuth extends PrivateConstants {
 	private static final String APPLICATION_NAME = "TentacleNet";
 	private static final List<String> SCOPES = Arrays.asList(SheetsScopes.SPREADSHEETS);
 	private static Sheets SHEETS_SERVICE;

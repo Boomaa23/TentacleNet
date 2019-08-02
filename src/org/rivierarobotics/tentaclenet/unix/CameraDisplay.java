@@ -1,6 +1,7 @@
 package org.rivierarobotics.tentaclenet.unix;
 
 import java.awt.FlowLayout;
+import java.io.IOException;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
@@ -42,13 +43,21 @@ public class CameraDisplay extends JFrame {
 	private void addCameraFeed(int x, int y) {
 		webcam.setImageTransformer(new ImageTransformer());
 		cameraPanel.setSize(x, y);
-		cameraPanel.setDrawMode(DrawMode.FIT);
+		cameraPanel.setDrawMode(DrawMode.FILL);
 		webcam.open();
 		cameraPanel.setMirrored(true);
 	}
 	
 	private void addButtons() {
-		buttonPanel.add(Utils.getListenedButton("Capture & Parse", e -> { Listener.parseImage(); }));
-		buttonPanel.add(Utils.getListenedButton("Close", e -> { this.dispose(); }));
+		buttonPanel.add(Utils.getListenedButton("Capture & Parse", e -> { 
+			webcam.setImageTransformer(null); 
+			try {
+				Listener.parseImage(webcam.getImage());
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			} 
+			webcam.setImageTransformer(new ImageTransformer());
+		}));
+		buttonPanel.add(Utils.getListenedButton("Close", e -> { webcam.close(); this.dispose(); }));
 	}
 }
