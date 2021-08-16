@@ -1,4 +1,3 @@
-target/
-bin/
-src/org/rivierarobotics/tentaclenet/unix/private.p12
-src/org/rivierarobotics/tentaclenet/unix/PrivateConstants.java
+*.iml
+.idea/*
+**/PrivateConstants.java
