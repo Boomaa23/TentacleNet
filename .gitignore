@@ -1,4 +1,7 @@
 *.iml
 .idea/
 target/
-**/PrivateConstants.java
+**/GoogleSvcAcctPrivateKey.json
+**/oauthrefresh.token
+**/googleclient.conf
+**/buffer.csv

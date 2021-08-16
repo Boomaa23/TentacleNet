@@ -15,6 +15,7 @@ import javax.swing.JScrollPane;
 
 public class Display implements DisplayElements {
     public static void main(String[] args) {
+        CSVHelper.getInstance().init();
         initFrame(500, Math.min(800, (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight())));
         addEventInfo();
         addMatchData();
@@ -24,7 +25,7 @@ public class Display implements DisplayElements {
 
     private static void initFrame(int x, int y) {
         try {
-            FRAME.setIconImage(ImageIO.read(ImageTransformer.class.getResourceAsStream("rr_logo.png")));
+            FRAME.setIconImage(ImageIO.read(Display.class.getResourceAsStream("/rr_logo.png")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -119,7 +120,6 @@ public class Display implements DisplayElements {
         BUTTONS.add(Utils.getListenedButton("Save", e -> Listener.saveAction(), true));
         BUTTONS.add(Utils.getListenedButton("Reset", e -> Data.clearAllInputs()));
         BUTTONS.add(Utils.getListenedButton("Upload", e -> Listener.uploadToServer()));
-        BUTTONS.add(Utils.getListenedButton("Clear Stored", e -> Data.SAVED_DATA_MATCHES = new ArrayList<>()));
         BUTTONS.add(Utils.getListenedButton("Camera", e -> new CameraDisplay()));
     }
 }

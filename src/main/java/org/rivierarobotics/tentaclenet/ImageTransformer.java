@@ -14,7 +14,7 @@ public class ImageTransformer implements WebcamImageTransformer {
     public BufferedImage transform(BufferedImage image) {
         BufferedImage imageFrame = null;
         try {
-            imageFrame = ImageIO.read(ImageTransformer.class.getResourceAsStream("overlay.png"));
+            imageFrame = ImageIO.read(ImageTransformer.class.getResourceAsStream("/overlay.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
